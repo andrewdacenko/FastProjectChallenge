@@ -33,10 +33,13 @@ def full_topic_to_json(topic_id):
 				c.q_comment = c.q_comment.id
 			comments.append({
 				'id': c.id,
-				'user': c.user.username,
+				'user':{
+					'id': c.user.id,
+					'username': c.user.username
+				},
 				'q_comment_id': c.q_comment,
 				'text': c.text,
-				'date_add': str(t.date_add.isoformat())
+				'date_add': str(c.date_add.isoformat())
 				})
 		t = {
 			'id': t.id,
@@ -87,6 +90,7 @@ def voting(request):
 def topic(request, topic_id):
 	if request.method == 'POST':
 		try:
+			print request.POST
 			c = Comment(user=request.user, topic_id=topic_id, text=request.POST.get('text', ''), date_add=datetime.datetime.now())
 			if request.POST.get('q_comment'):
 				c.q_comment = request.POST.get('q_comment')
