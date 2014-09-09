@@ -22,6 +22,56 @@ textarea.comment-area:focus {
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(224, 228, 231, 0.6);
 }
 
+.comment-item {
+  margin-bottom: 10px;
+  background: whitesmoke;
+}
+
+.comment-author {
+  padding: 5px;
+  border-bottom: 1px solid #dddddd;
+}
+
+.comment-time, .comment-reply-to {
+  font-size: 10px;
+  color: rgb(107, 107, 107);
+}
+
+.comment-reply-to {
+  text-decoration: underline;
+}
+
+.comment-text {
+  cursor: pointer;
+  line-height: 1.5em;
+  padding: 1em;
+}
+
+.reply-to-block {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.reply-to-person:hover {
+  color: black;
+  cursor: default;
+}
+
+.reveal-animation.ng-enter {
+  -webkit-animation: enter_sequence 1s linear; /* Safari/Chrome */
+  animation: enter_sequence 1s linear; /* IE10+ and Future Browsers */
+}
+
+@-webkit-keyframes enter_sequence {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+
+@keyframes enter_sequence {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+
 .wrapper, .row {
    height: 100%;
    margin-left:0;
