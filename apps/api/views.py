@@ -24,7 +24,7 @@ def topic_to_json(topic_list):
 			})
 	return res
 
-def voting_topic_to_json(t):
+def voting_topic_to_json(t, user_id):
 	res = {
 		'id': t.id,
 		'owner': {
@@ -34,9 +34,9 @@ def voting_topic_to_json(t):
 		'title': t.title,
 		'sum': TopicUserLike().likes(t.id)['value__sum'],
 		'top_users': TopicUserLike().get_top_users(t.id),
+		'user_choice': Vote().choice(t.id, user_id),
 		'date_add': str(t.date_add.isoformat())
 	}
-	print res
 	return res
 
 def full_topic_to_json(topic_id):
@@ -137,12 +137,25 @@ def topics(request):
 		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
 
 def topic_top(request, topic_id):
-	# try:
-	t = Topic.objects.get(id=topic_id)
-	data = voting_topic_to_json(t)
-	return HttpResponse(json.dumps(data), content_type="application/json")
-	# except:	
-	# 	return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
+	try:
+		t = Topic.objects.get(id=topic_id)
+		data = voting_topic_to_json(t, user_id)
+		return HttpResponse(json.dumps(data), content_type="application/json")
+	except:	
+		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
+
+def topic_vote(request, topic_id):
+	try:
+		user_to = request.POST.get('user_id')
+		t = Topic.objects.get(id=topic_id)
+		if not user_to or not t:
+			return HttpResponse(json.dumps({ 'error': 'error data' }), content_type="application/json", status=403)
+		if len(Vore.objects.filter(topic_id=topic_id, user_from_id=request.user.id)):
+			return HttpResponse(json.dumps({ 'error': 'your already vote' }), content_type="application/json", status=403)
+		Vote(user_from_id=request.user.id, user_to_id=user_to, topic_id=topic_id).save()
+		return HttpResponse(json.dumps({ 'result': 'ok' }), content_type="application/json")
+	except:	
+		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
 
 def topic_like(request, topic_id):
 	try:

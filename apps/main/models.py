@@ -54,3 +54,9 @@ class Vote(models.Model):
 	user_from = models.ForeignKey('auth.User', related_name='vuf')
 	user_to = models.ForeignKey('auth.User', related_name='vut')
 	topic = models.ForeignKey(Topic, related_name='vt')
+
+	def choice(self,topic_id, user_to_id):
+		v = Vote().objects.filter(user_to_id=user_to_id, topic_id=topic_id)
+		if len(v):
+			return v[0].user_from.id
+		return None
