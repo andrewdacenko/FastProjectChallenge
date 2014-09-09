@@ -66,7 +66,7 @@
 	};
 
 	angular
-		.module('MyApp', ['angularMoment'])
+		.module('MyApp', ['angularMoment', 'ngCookies'])
 		.config(function($interpolateProvider) {
 			$interpolateProvider.startSymbol('{$');
 			$interpolateProvider.endSymbol('$}');
@@ -74,5 +74,8 @@
 		.controller('IndexController', ['$http', IndexController])
 		.controller('StateController', ['$http', '$location', StateController])
 		.controller('TopicController', ['$http', '$location', TopicController])
+		.run(function($http, $cookies) {
+			$http.defaults.headers.post['X-CSRFToken'] = $cookies['csrftoken'];
+		})
 
 })();
