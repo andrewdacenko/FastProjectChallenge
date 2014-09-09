@@ -107,6 +107,18 @@
 			form.focus();
 		};
 
+		this.likeTopic = function(bool) {
+			var url = !!bool ? 'like' : 'dislike';
+
+			$http
+				.post('/api/topic/' + self.id + '/' + url)
+				.then(function(response) {
+					console.log(response.data);
+				}, function(reason) {
+					console.log(reason);
+				});
+		};
+
 		$http.get('/api/topic/' + self.id).then(function(response) {
 			self.topic = angular.copy(response.data);
 		});
