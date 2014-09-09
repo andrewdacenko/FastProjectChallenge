@@ -47,6 +47,8 @@
 			comments: []
 		};
 
+		this.top = [];
+
 		this.error = {
 			timeout: null,
 			text: ''
@@ -147,8 +149,24 @@
 				});
 		};
 
+		this.vote = function(user) {
+			$http
+				.post('/api/topic/' + self.id + '/vote', {
+					user_id: user.id
+				})
+				.then(function(response) {
+					console.log(response);
+				}, function(reason) {
+					console.log(reason);
+				});
+		};
+
 		$http.get('/api/topic/' + self.id).then(function(response) {
 			self.topic = angular.copy(response.data);
+		});
+
+		$http.get('/api/topic/' + self.id + '/top').then(function(response) {
+			self.top = angular.copy(response.data.top_users);
 		});
 	};
 
