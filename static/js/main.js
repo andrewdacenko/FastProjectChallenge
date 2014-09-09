@@ -10,11 +10,12 @@
 		this.voting = [];
 		this.archive = [];
 
-		$http.get('/api').then(function(response) {
-			self.active = angular.copy(response.data.active);
-			self.voting = angular.copy(response.data.voting);
-			self.archive = angular.copy(response.data.archive);
-		});
+		$http.get('/api')
+			.then(function(response) {
+				self.active = angular.copy(response.data.active);
+				self.voting = angular.copy(response.data.voting);
+				self.archive = angular.copy(response.data.archive);
+			});
 	};
 
 	function StateController($http, $location) {
@@ -48,6 +49,7 @@
 		};
 
 		this.top = [];
+		this.user_choice = null;
 
 		this.error = {
 			timeout: null,
@@ -167,6 +169,7 @@
 
 		$http.get('/api/topic/' + self.id + '/top').then(function(response) {
 			self.top = angular.copy(response.data.top_users);
+			self.user_choice = angular.copy(response.data.user_choice);
 		});
 	};
 
@@ -215,23 +218,42 @@
 		};
 	};
 
+	function ngEnter() {
+		return function(scope, element, attrs) {
+			element.bind("keydown keypress", function(event) {
+				if (event.which === 13) {
+					scope.$apply(function() {
+						scope.$eval(attrs.ngEnter);
+					});
+
+					event.preventDefault();
+				}
+			});
+		};
+	};
+
+	function appCongif($httpProvider, $interpolateProvider) {
+		$interpolateProvider.startSymbol('{$');
+		$interpolateProvider.endSymbol('$}');
+		$httpProvider.defaults.transformRequest = function(data) {
+			if (data === undefined) return data;
+			return $.param(data);
+		};
+		$httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+	};
+
+	function appRun($http, $cookies) {
+		$http.defaults.headers.post['X-CSRFToken'] = $cookies['csrftoken'];
+	};
+
 	angular
 		.module('MyApp', ['angularMoment', 'ngCookies'])
-		.config(function($httpProvider, $interpolateProvider) {
-			$interpolateProvider.startSymbol('{$');
-			$interpolateProvider.endSymbol('$}');
-			$httpProvider.defaults.transformRequest = function(data) {
-				if (data === undefined) return data;
-				return $.param(data);
-			};
-			$httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
-		})
+		.config(['$httpProvider', '$interpolateProvider', appCongif])
+		.directive('ngEnter', ngEnter)
 		.controller('IndexController', ['$http', IndexController])
 		.controller('StateController', ['$http', '$location', StateController])
 		.controller('TopicController', ['$http', '$location', '$timeout', TopicController])
 		.controller('NewTopicController', ['$http', '$location', '$timeout', NewTopicController])
-		.run(function($http, $cookies) {
-			$http.defaults.headers.post['X-CSRFToken'] = $cookies['csrftoken'];
-		})
+		.run(['$http', '$cookies', appRun])
 
 })();
