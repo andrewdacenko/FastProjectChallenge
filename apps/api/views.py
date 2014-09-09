@@ -33,7 +33,7 @@ def voting_topic_to_json(t, user_id):
 			},
 		'title': t.title,
 		'sum': TopicUserLike().likes(t.id)['value__sum'],
-		'top_users': TopicUserLike().get_top_users(t.id),
+		'top_users': TopicUserLike().get_top_users(t.id, user_id),
 		'user_choice': Vote().choice(t.id, user_id),
 		'date_add': str(t.date_add.isoformat())
 	}

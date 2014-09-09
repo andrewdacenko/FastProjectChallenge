@@ -26,7 +26,7 @@ class TopicUserLike(models.Model):
 	def likes(self, topic_id):
 		return TopicUserLike.objects.filter(topic_id=topic_id).aggregate(models.Sum('value'))
 
-	def get_top_users(self, topic_id):
+	def get_top_users(self, topic_id, user_id):
 		tuls = TopicUserLike.objects.filter(topic_id=topic_id)
 		users = []
 		for tul in tuls:
@@ -37,7 +37,8 @@ class TopicUserLike(models.Model):
 			res.append({
 				'id': u.id,
 				'username': u.username,
-				'sum': TopicUserLike.objects.filter(user_id=u.id, topic_id=topic_id).aggregate(models.Sum('value'))['value__sum']
+				'sum': TopicUserLike.objects.filter(user_id=u.id, topic_id=topic_id).aggregate(models.Sum('value'))['value__sum'],
+				'votes': len(Vote.objects.filter(topic_id=topic_id, user_to=user_id))
 			})
 		return res
 
