@@ -26,10 +26,10 @@
       <div ng-show="topicController.isVotable()" class="vote-container">
         <div ng-repeat="a in topicController.top">
           <div ng-hide="topicController.voted" class="vote-candidate">
-            <div class="vote-candidate-name" ng-click="topicController.vote(a)">
+            <div class="vote-candidate-name">
                {$ a.username $}
             </div>
-            <div class="vote-candidate-button">Vote</div>
+            <div class="vote-candidate-button" ng-click="topicController.vote(a)">Vote</div>
           </div>
           <div ng-if="topicController.voted" class="voted-candidate">
             <div class="voted-candidate-name"> • {$ a.username $}</div>
