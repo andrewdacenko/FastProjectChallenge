@@ -9,7 +9,6 @@
       <br>
       
       <form name="commentForm" novalidate class="form" ng-submit="commentForm.$valid">
-      {% csrf_token %}
         <div class="form-group">
           <textarea class="form-control comment-area" ng-model="topicController.text" required placeholder="Sample argument" rows="5">{$ commentForm.text $}</textarea>
         </div>
