@@ -150,7 +150,7 @@ def topic_vote(request, topic_id):
 		t = Topic.objects.get(id=topic_id)
 		if not user_to or not t:
 			return HttpResponse(json.dumps({ 'error': 'error data' }), content_type="application/json", status=403)
-		if len(Vore.objects.filter(topic_id=topic_id, user_from_id=request.user.id)):
+		if len(Vote.objects.filter(topic_id=topic_id, user_from_id=request.user.id)):
 			return HttpResponse(json.dumps({ 'error': 'your already vote' }), content_type="application/json", status=403)
 		Vote(user_from_id=request.user.id, user_to_id=user_to, topic_id=topic_id).save()
 		return HttpResponse(json.dumps({ 'result': 'ok' }), content_type="application/json")
