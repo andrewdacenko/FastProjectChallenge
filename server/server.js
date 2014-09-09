@@ -1,37 +1,18 @@
-// Meteor.publish("activeTopics", function() {
-// 	var now = new Date();
-// 	var yesterday = new Date();
-// 	yesterday.setDate(now.getDate() - 1);
-// 	return Topics.find({}, {
-// 		dateAdd: {
-// 			$gte: yesterday
-// 		}
-// 	});
-// });
+if (Topics.find().count() === 0) {
+	Topics.insert({
+		title: 'Introducing Telescope',
+		author: 'Sacha Greif',
+	});
 
-// Meteor.publish("voteTopics", function() {
-// 	var now = new Date();
-// 	var yesterday = new Date();
-// 	var beforeYesterday = new Date();
-// 	yesterday.setDate(now.getDate() - 1);
-// 	beforeYesterday.setDate(now.getDate() - 1);
-// 	return Topics.find({}, {
-// 		dateAdd: {
-// 			$lte: yesterday,
-// 			$gte: beforeYesterday
-// 		}
-// 	});
-// });
+	Topics.insert({
+		title: 'Meteor',
+		author: 'Tom Coleman',
+	});
 
-// Meteor.publish("archiveTopics", function() {
-// 	var now = new Date();
-// 	var beforeYesterday = new Date();
-// 	beforeYesterday.setDate(now.getDate() - 2);
-// 	return Topics.find({}, {
-// 		dateAdd: {
-// 			$lte: beforeYesterday
-// 		}
-// 	});
-// });
+	Topics.insert({
+		title: 'The Meteor Book',
+		author: 'Tom Coleman',
+	});
+}
 
 Meteor.publish('topics');
