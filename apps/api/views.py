@@ -83,5 +83,12 @@ def voting(request):
 	return HttpResponse(json.dumps(data), content_type="application/json")
 
 def topic(request, topic_id):
+	if request.method == 'POST':
+		if request.user == None:
+			return HttpResponseRedirect('/login/')
+		c = Comment(user=request.user, topic_id=topic_id, text=request.POST.get('text', ''), date_add=datetime.datetime.now())
+		if request.POST.get('q_comment'):
+			c.q_comment = request.POST.get('q_comment')
+		c.save()
 	t = full_topic_to_json(topic_id)
 	return HttpResponse(json.dumps(t), content_type="application/json")

@@ -9,7 +9,7 @@ class Topic(models.Model):
 class Comment(models.Model):
 	user = models.ForeignKey('auth.User', related_name='cu')
 	topic = models.ForeignKey('main.Topic', related_name='ct')
-	q_comment = models.ForeignKey(Topic, related_name='cc')
+	q_comment = models.ForeignKey(Topic, related_name='cc', null=True, on_delete=models.SET_NULL, blank=True)
 	text = models.CharField(max_length=255)
 	date_add = models.DateTimeField(default = datetime.datetime.now())
 
