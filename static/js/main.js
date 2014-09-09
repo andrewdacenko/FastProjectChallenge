@@ -78,13 +78,51 @@
 		});
 	};
 
-	function nl2br($sce) {
-		return function(msg, is_xhtml) {
-			var is_xhtml = is_xhtml || true;
-			var breakTag = (is_xhtml) ? '<br />' : '<br>';
-			var msg = (msg + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
-			return $sce.trustAsHtml(msg);
-		}
+	function NewTopicController($http, $location, $timeout) {
+		var self = this;
+
+		this.error = {
+			timeout: null,
+			text: ''
+		};
+
+		this.text = '';
+
+		this.submit = function() {
+			if (self.error.timeout) {
+				$timeout.cancel(self.error.timeout);
+			};
+
+			console.log(self.text.trim().length);
+
+			if ((self.text.trim()).length < 10) {
+				self.error.text = 'Need at least 10 symbols';
+				self.error.timeout = $timeout(function() {
+					self.error.text = '';
+				}, 1500);
+
+				return;
+			};
+
+			$http
+				.post('/api/topics', {
+					title: this.text
+				})
+				.then(function(response) {
+					var id = response.data.id;
+					window.location = '/topic/' + id;
+				}, function(reason) {
+					if (reason.status === 401) {
+						window.location = '/login';
+					};
+
+					self.error.text = 'Something went wrong';
+					self.error.timeout = $timeout(function() {
+						self.error.text = '';
+						self.error.timeout = null;
+					}, 1500);
+				});
+		};
 	};
 
 	angular
@@ -98,10 +136,10 @@
 			};
 			$httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 		})
-	// .filter('nl2br', ['$sce', nl2br])
-	.controller('IndexController', ['$http', IndexController])
+		.controller('IndexController', ['$http', IndexController])
 		.controller('StateController', ['$http', '$location', StateController])
 		.controller('TopicController', ['$http', '$location', TopicController])
+		.controller('NewTopicController', ['$http', '$location', '$timeout', NewTopicController])
 		.run(function($http, $cookies) {
 			$http.defaults.headers.post['X-CSRFToken'] = $cookies['csrftoken'];
 		})

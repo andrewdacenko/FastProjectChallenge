@@ -16,22 +16,22 @@
       </div>
       <div ng-repeat="a in topicController.topic.comments" class="comment-item">
     
-      	<div class="comment-author" id="comment{$ a.id $}">
-      		<span class="label label-default">{$ a.user.username $}</span> <span class="comment-time" am-time-ago="a.date_add"></span> <span class="comment-reply-to" ng-if="a.q_comment_id">as comment to {$ a.q_comment_id $}</span>
-      	</div>
-      	<div class="comment-text" ng-click="topicController.comment($event, a)">{$ a.text $}</div>
+        <div class="comment-author" id="comment{$ a.id $}">
+            <span class="label label-default">{$ a.user.username $}</span> <span class="comment-time" am-time-ago="a.date_add"></span> <span class="comment-reply-to" ng-if="a.q_comment_id">as comment to {$ a.q_comment_id $}</span>
+        </div>
+        <div class="comment-text" ng-click="topicController.comment($event, a)">{$ a.text $}</div>
     
       </div>
 
       <hr>
 
-      <form name="commentForm" novalidate class="form" ng-submit="commentForm.$valid">
-		{% csrf_token %}
+      <form name="commentForm" novalidate class="form" ng-submit="commentForm.$valid && topicController.submit()">
+        {% csrf_token %}
         <div class="form-group">
-          <textarea class="form-control comment-area" ng-model="topicController.text" required placeholder="Sample argument" rows="5"></textarea>
+          <textarea class="form-control comment-area" ng-model="topicController.text" required minlength="1" placeholder="Sample argument" rows="5"></textarea>
         </div>
         <div class="form-group">
-          <button class="btn btn-default" ng-click="topicController.submit()">Comment</button> <div class="text-muted reply-to-block" ng-if="topicController.to">as a reply to <u class="reply-to-person">{$ topicController.to.username $}</u></div>
+          <button type="submit" class="btn btn-default">Comment</button> <div class="text-muted reply-to-block" ng-if="topicController.to">as a reply to <u class="reply-to-person">{$ topicController.to.username $}</u></div>
         </div>
       </form>
 

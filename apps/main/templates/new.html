@@ -1,5 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+  <div ng-controller="NewTopicController as new" class="row">
+    <div class="col-sm-12"> 
+      <div class="page-header text-muted">
+        Create new topic
+      </div> 
+    </div>
+    <div class="col-sm-12"> 
+      <form name="topicForm" novalidate class="form" ng-submit="topicForm.$valid && new.submit()">
+        {% csrf_token %}
+        <div class="form-group">
+          <textarea class="form-control comment-area" ng-model="new.text" required minlength="10" placeholder="Sample argument" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-default">Create</button>
+        </div>
+        <p ng-if="new.error.text">{$ new.error.text $}</p>
+      </form>
+    </div>
+  </div>
 {% endblock %}
