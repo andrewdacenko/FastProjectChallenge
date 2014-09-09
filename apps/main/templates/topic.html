@@ -5,35 +5,39 @@
     <div class="col-sm-10">
       <h3 class="page-header">{$ topicController.topic.title $}</h3>
       <h4><span class="label label-default">{$ topicController.topic.owner.username $}</span></h4>
-      
+      <h4>
+        <small class="text-muted"><span am-time-ago="topicController.topic.date_add"></span></small>
+      </h4>
       <br>
       
-      <form name="commentForm" novalidate class="form" ng-submit="commentForm.$valid">
-		{% csrf_token %}
-        <div class="form-group">
-          <textarea class="form-control comment-area" ng-model="topicController.text" required placeholder="Sample argument" rows="5">{$ commentForm.text $}</textarea>
-        </div>
-        <div class="form-group">
-          <button class="btn btn-default" ng-click="topicController.comment()">Comment</button>
-        </div>
-      </form>
 
-      <hr>
-      
       <div ng-hide="topicController.topic.comments.length !== 0">
         <p class="text-muted">No comments yet.</p>
       </div>
-      <div ng-repeat="c in topicController.topic.comments | orderBy:'-id'">
-        <div>
-          <p>{$ c.text $}</p>
-        </div>
+      <div ng-repeat="a in topicController.topic.comments" class="comment-item">
+    
+      	<div class="comment-author" id="comment{$ a.id $}">
+      		<span class="label label-default">{$ a.user.username $}</span> <span class="comment-time" am-time-ago="a.date_add"></span> <span class="comment-reply-to" ng-if="a.q_comment_id">as comment to {$ a.q_comment_id $}</span>
+      	</div>
+      	<div class="comment-text" ng-click="topicController.comment($event, a)">{$ a.text $}</div>
+    
       </div>
-      <h4>
-        <small class="text-muted"><span am-time-ago="topic.date_add"></span></small>
-      </h4>
+
+      <hr>
+
+      <form name="commentForm" novalidate class="form" ng-submit="commentForm.$valid">
+		{% csrf_token %}
+        <div class="form-group">
+          <textarea class="form-control comment-area" ng-model="topicController.text" required placeholder="Sample argument" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-default" ng-click="topicController.submit()">Comment</button> <div class="text-muted reply-to-block" ng-if="topicController.to">as a reply to <u class="reply-to-person">{$ topicController.to.username $}</u></div>
+        </div>
+      </form>
+
     </div>
     <div class="col-sm-2">
-      <a href="#" class="pull-right">{$ topic.votes $}</a>
+      <a href="#" class="pull-right">{$ topicController.topic.votes $}</a>
     </div>
   </div>
 {% endblock %}
