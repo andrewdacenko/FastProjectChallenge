@@ -127,6 +127,10 @@ def user(request, user_id):
 				'id': c.user.id,
 				'username': c.user.username
 			},
+			'topic':{
+				'id': c.topic.id,
+				'title': c.topic.title
+			},
 			'q_comment_id': qcl,
 			'sum': CommentUserLike().likes(c.id)['value__sum'],
 			'text': c.text,
