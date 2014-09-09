@@ -29,10 +29,12 @@ def full_topic_to_json(topic_id):
 		comments = []
 		cs = Comment.objects.filter(topic_id=t.id)
 		for c in cs:
+			if c.q_comment:
+				c.q_comment = c.q_comment.id
 			comments.append({
 				'id': c.id,
 				'user': c.user.username,
-				'q_comment_id': c.q_comment.id,
+				'q_comment_id': c.q_comment,
 				'text': c.text,
 				'date_add': str(t.date_add.isoformat())
 				})
