@@ -123,7 +123,7 @@
 			var url = !!bool ? 'like' : 'dislike';
 
 			$http
-				.post('/api/topic/' + comment.id + '/' + url)
+				.post('/api/comment/' + comment.id + '/' + url)
 				.then(function(response) {
 					comment.sum = comment.sum + (!!bool ? 1 : -1);
 				}, function(reason) {
