@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 import datetime
 
@@ -7,7 +8,7 @@ class Topic(models.Model):
 	date_add = models.DateTimeField(default = datetime.datetime.now())
 
 	def is_active(self):
-		return self.date_add >= datetime.datetime.now() - datetime.timedelta(days=1)
+		return self.date_add >= timezone.now() - datetime.timedelta(days=1)
 
 class Comment(models.Model):
 	user = models.ForeignKey('auth.User', related_name='cu')

@@ -92,8 +92,11 @@ def topic(request, topic_id):
 		try:
 			print request.POST
 			t = Topic.objects.get(id=topic_id)
+
 			if not t.is_active():
 				return HttpResponse(json.dumps({ 'error': 'comment error' }), content_type="application/json", status=403)
+			
+			print t.title
 			c = Comment(user=request.user, topic_id=topic_id, text=request.POST.get('text', ''), date_add=datetime.datetime.now())
 			if request.POST.get('q_comment'):
 				c.q_comment = request.POST.get('q_comment')
