@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'south',
 
     'apps.main',
-    # 'apps.guest',
+    'apps.guest',
 )
 
 MIDDLEWARE_CLASSES = (
