@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from datetime import datetime, timedelta
 from dateutil.tz import tzutc
+from django.contrib.auth.models import User
 import json
 
 from apps.main.models import *
@@ -29,15 +30,16 @@ def full_topic_to_json(topic_id):
 		comments = []
 		cs = Comment.objects.filter(topic_id=t.id)
 		for c in cs:
+			qcl = c.q_comment
 			if c.q_comment:
-				c.q_comment = c.q_comment.id
+				qcl = c.q_comment.id
 			comments.append({
 				'id': c.id,
 				'user':{
 					'id': c.user.id,
 					'username': c.user.username
 				},
-				'q_comment_id': c.q_comment,
+				'q_comment_id': qcl,
 				'text': c.text,
 				'date_add': str(c.date_add.isoformat())
 				})
@@ -90,16 +92,12 @@ def voting(request):
 def topic(request, topic_id):
 	if request.method == 'POST':
 		try:
-			print request.POST
 			t = Topic.objects.get(id=topic_id)
-
 			if not t.is_active():
 				return HttpResponse(json.dumps({ 'error': 'comment error' }), content_type="application/json", status=403)
-			
-			print t.title
 			c = Comment(user=request.user, topic_id=topic_id, text=request.POST.get('text', ''), date_add=datetime.datetime.now())
 			if request.POST.get('q_comment'):
-				c.q_comment_id = request.POST.get('q_comment')
+				c.q_comment_id = request.POST.get('q_comment', 1)
 			c.save()
 		except:
 			return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
