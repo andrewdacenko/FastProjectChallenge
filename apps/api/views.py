@@ -117,3 +117,23 @@ def topics(request):
 		return HttpResponse(json.dumps(t), content_type="application/json")
 	except:	
 		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
+
+def topic_like(request, topic_id):
+	try:
+		tul = TopicUserLike.objects.filter(user_id=request.user_id, topic_id=topic_id)
+		if tul > 0:
+			return HttpResponse(json.dumps({ 'error': 'already liked' }), content_type="application/json", status=403)
+		TopicUserLike(user_id=request.user_id, topic_id=topic_id, value=1).save()
+		return HttpResponse(json.dumps({ 'result': 'ok' }), content_type="application/json")
+	except:	
+		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
+
+def topic_dislike(request, topic_id):
+	try:
+		tul = TopicUserLike.objects.filter(user_id=request.user_id, topic_id=topic_id)
+		if tul > 0:
+			return HttpResponse(json.dumps({ 'error': 'already liked' }), content_type="application/json", status=403)
+		TopicUserLike(user_id=request.user_id, topic_id=topic_id, value=-1).save()
+		return HttpResponse(json.dumps({ 'result': 'ok' }), content_type="application/json")
+	except:	
+		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)

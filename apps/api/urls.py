@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^topic/(?P<topic_id>\d+)$', 'apps.api.views.topic'),
 
 
-
+    url(r'^topic/(?P<topic_id>\d+)/like$', 'apps.api.views.topic_like'),
+    url(r'^topic/(?P<topic_id>\d+)/dislike$', 'apps.api.views.topic_dislike'),
 
 )
