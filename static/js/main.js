@@ -3,31 +3,66 @@
 
 (function() {
 
-	function IndexController($scope) {
-		var now = new Date();
-		var data = [{
-			title: 'First',
-		}, {
-			title: 'Second',
-		}, {
-			title: 'Third',
-		}];
+	function IndexController($http) {
+		var self = this;
 
-		[2, 5, 10].forEach(function(minute, index) {
-			now.setMinutes(now.getMinutes() - minute);
-			var time = now;
-			console.log('time', time);
-			data[index].date_add = (time).toISOString();
+		this.active = [];
+		this.voting = [];
+		this.archive = [];
+
+		$http.get('/api').then(function(response) {
+			self.active = angular.copy(response.data.active);
+			self.voting = angular.copy(response.data.voting);
+			self.archive = angular.copy(response.data.archive);
 		});
+	};
 
-		console.log(data);
+	function StateController($http, $location) {
+		var self = this;
 
-		$scope.active = angular.copy(data);
-		$scope.voting = angular.copy(data);
-		$scope.archive = angular.copy(data);
+		this.topics = [];
+		this.title = '';
 
-		$scope.pageLoadTime = (new Date()).toISOString();
-		// $scope.nowTime = nowTime;
+		var type = $location.absUrl().split('/')[3];
+
+		var types = ['active', 'voting', 'archive'];
+
+		if (types.indexOf(type) !== -1) {
+
+			this.title = type.charAt(0).toUpperCase() + type.slice(1);
+
+			$http.get('/api/' + type).then(function(response) {
+				self.topics = angular.copy(response.data);
+			});
+
+		};
+	};
+
+	function TopicController($http, $location) {
+		var self = this;
+
+		this.id = $location.absUrl().split('/')[4];
+
+		this.topic = {
+			comments: []
+		};
+
+		this.text = '';
+
+		this.comment = function() {
+			$http.post('/api/topic/' + self.id, {
+				text: this.text
+			}).then(function(response) {
+				self.topic.comments.push(response.data);
+			}, function(reason) {
+				console.log(reason);
+			});
+		}
+
+
+		$http.get('/api/topic/' + self.id).then(function(response) {
+			self.topic = angular.copy(response.data);
+		});
 	};
 
 	angular
@@ -36,6 +71,8 @@
 			$interpolateProvider.startSymbol('{$');
 			$interpolateProvider.endSymbol('$}');
 		})
-		.controller('IndexController', ['$scope', IndexController]);
+		.controller('IndexController', ['$http', IndexController])
+		.controller('StateController', ['$http', '$location', StateController])
+		.controller('TopicController', ['$http', '$location', TopicController])
 
 })();

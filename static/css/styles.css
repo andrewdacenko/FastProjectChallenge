@@ -12,6 +12,16 @@ a {
   color:#222222;
 }
 
+textarea {
+  resize: vertical;
+}
+
+textarea.comment-area:focus {
+  border-color: #E7E7E7;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(231, 231, 231, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(224, 228, 231, 0.6);
+}
+
 .wrapper, .row {
    height: 100%;
    margin-left:0;

@@ -1,5 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-	{{ aaa }}
+  <div ng-controller="TopicController as topicController" class="row">
+    <div class="col-sm-10">
+      <h3 class="page-header">{$ topicController.topic.title $}</h3>
+      <h4><span class="label label-default">{$ topicController.topic.owner.username $}</span></h4>
+      
+      <br>
+      
+      <form name="commentForm" novalidate class="form" ng-submit="commentForm.$valid">
+        <div class="form-group">
+          <textarea class="form-control comment-area" ng-model="topicController.text" required placeholder="Sample argument" rows="5">{$ commentForm.text $}</textarea>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-default" ng-click="topicController.comment()">Comment</button>
+        </div>
+      </form>
+
+      <hr>
+      
+      <div ng-hide="topicController.topic.comments.length !== 0">
+        <p class="text-muted">No comments yet.</p>
+      </div>
+      <div ng-repeat="c in topicController.topic.comments | orderBy:'-id'">
+        <div>
+          <p>{$ c.text $}</p>
+        </div>
+      </div>
+      <h4>
+        <small class="text-muted"><span am-time-ago="topic.date_add"></span></small>
+      </h4>
+    </div>
+    <div class="col-sm-2">
+      <a href="#" class="pull-right">{$ topic.votes $}</a>
+    </div>
+  </div>
 {% endblock %}
