@@ -137,12 +137,12 @@ def topics(request):
 		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
 
 def topic_top(request, topic_id):
-	try:
-		t = Topic.objects.get(id=topic_id)
-		data = voting_topic_to_json(t, user_id)
-		return HttpResponse(json.dumps(data), content_type="application/json")
-	except:	
-		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
+	# try:
+	t = Topic.objects.get(id=topic_id)
+	data = voting_topic_to_json(t, request.user.id)
+	return HttpResponse(json.dumps(data), content_type="application/json")
+	# except:	
+	# 	return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
 
 def topic_vote(request, topic_id):
 	try:
