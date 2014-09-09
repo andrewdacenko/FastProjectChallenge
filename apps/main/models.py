@@ -22,6 +22,9 @@ class TopicUserLike(models.Model):
 	topic = models.ForeignKey(Topic, related_name='tult')
 	value = models.IntegerField(default = 0)
 
+	def likes(self, topic_id):
+		return TopicUserLike.objects.filter(topic_id=topic_id).aggregate(models.Sum('value'))
+
 class CommentUserLike(models.Model):
 	user = models.ForeignKey('auth.User', related_name='culu')
 	comment = models.ForeignKey(Comment, related_name='culc')
