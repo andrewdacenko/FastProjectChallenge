@@ -4,7 +4,7 @@ from dateutil.tz import tzutc
 import json
 
 from apps.main.models import *
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 UTC = tzutc()
 
@@ -99,3 +99,12 @@ def topic(request, topic_id):
 			return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
 	t = full_topic_to_json(topic_id)
 	return HttpResponse(json.dumps(t), content_type="application/json")
+
+def topics(request):
+	if request.method != 'POST':
+		return HttpResponseRedirect('/')
+	try:
+		t = Topic(owner = request.user, title = request.POST.get('title', ''))
+		# t.
+	except:
+		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)

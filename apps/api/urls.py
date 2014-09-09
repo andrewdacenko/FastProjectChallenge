@@ -5,6 +5,10 @@ urlpatterns = patterns('',
     url(r'^active$', 'apps.api.views.active'),
     url(r'^archive$', 'apps.api.views.archive'),
     url(r'^voting$', 'apps.api.views.voting'),
+    url(r'^topics$', 'apps.api.views.topics'),
     url(r'^topic/(?P<topic_id>\d+)$', 'apps.api.views.topic'),
+
+
+
 
 )

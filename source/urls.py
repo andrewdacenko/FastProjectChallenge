@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'apps.main.views.index', name='index'),
     url(r'^topic/(?P<topic_id>\d+)$', 'apps.main.views.topic'),
+    url(r'^new/$', 'apps.main.views.new'),
     url(r'^active/$', 'apps.main.views.state'),
     url(r'^voting/$', 'apps.main.views.state'),
     url(r'^archive/$', 'apps.main.views.state'),

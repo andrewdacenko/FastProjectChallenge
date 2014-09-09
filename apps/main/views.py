@@ -14,3 +14,6 @@ def topic(request, topic_id):
 
 def state(request):
 	return render(request, 'state.html', {})
+
+def new(request):
+	return render(request, 'new.html', {})
