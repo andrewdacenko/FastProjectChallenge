@@ -19,7 +19,7 @@ def topic_to_json(topic_list):
 					'username': t.owner.username
 				},
 			'title': t.title,
-			'sum': TopicUserLike().likes(t.id),
+			'sum': TopicUserLike().likes(t.id)['value__sum'],
 			'date_add': str(t.date_add.isoformat())
 			})
 	return res
@@ -54,7 +54,7 @@ def full_topic_to_json(topic_id):
 					'username': t.owner.username
 				},
 			'title': t.title,
-			'sum': TopicUserLike().likes(t.id),
+			'sum': TopicUserLike().likes(t.id)['value__sum'],
 			'comments': comments,
 			'date_add': str(t.date_add.isoformat())
 			}
