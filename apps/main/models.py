@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.contrib.auth.models import User
 from django.db import models
 import datetime
 
@@ -25,12 +26,28 @@ class TopicUserLike(models.Model):
 	def likes(self, topic_id):
 		return TopicUserLike.objects.filter(topic_id=topic_id).aggregate(models.Sum('value'))
 
+	def get_top_users(self, topic_id):
+		tuls = TopicUserLike.objects.filter(topic_id=topic_id)
+		users = []
+		for tul in tuls:
+			if tul.user not in users:
+				users.append(tul.user)
+		res = []
+		for u in users:
+			res.append({
+				'id': u.id,
+				'username': u.username,
+				'sum': TopicUserLike.objects.filter(user_id=u.id, topic_id=topic_id).aggregate(models.Sum('value'))['value__sum']
+			})
+		return res
+
 class CommentUserLike(models.Model):
 	user = models.ForeignKey('auth.User', related_name='culu')
 	comment = models.ForeignKey(Comment, related_name='culc')
 	value = models.IntegerField(default = 0)
 
 	def likes(self, comment_id):
+		print CommentUserLike.objects.filter(comment_id=comment_id)
 		return CommentUserLike.objects.filter(comment_id=comment_id).aggregate(models.Sum('value'))
 
 class Vote(models.Model):

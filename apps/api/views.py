@@ -24,6 +24,21 @@ def topic_to_json(topic_list):
 			})
 	return res
 
+def voting_topic_to_json(t):
+	res = {
+		'id': t.id,
+		'owner': {
+				'id': t.owner.id,
+				'username': t.owner.username
+			},
+		'title': t.title,
+		'sum': TopicUserLike().likes(t.id)['value__sum'],
+		'top_users': TopicUserLike().get_top_users(t.id),
+		'date_add': str(t.date_add.isoformat())
+	}
+	print res
+	return res
+
 def full_topic_to_json(topic_id):
 	t = Topic.objects.filter(id=topic_id)
 	if len(t):
@@ -121,6 +136,14 @@ def topics(request):
 	except:	
 		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
 
+def topic_top(request, topic_id):
+	# try:
+	t = Topic.objects.get(id=topic_id)
+	data = voting_topic_to_json(t)
+	return HttpResponse(json.dumps(data), content_type="application/json")
+	# except:	
+	# 	return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
+
 def topic_like(request, topic_id):
 	try:
 		tul = TopicUserLike.objects.filter(user_id=request.user.id, topic_id=topic_id)
@@ -146,7 +169,8 @@ def comment_like(request, comment_id):
 		cul = CommentUserLike.objects.filter(user_id=request.user.id, comment_id=comment_id)
 		if len(cul):
 			return HttpResponse(json.dumps({ 'error': 'already liked' }), content_type="application/json", status=403)
-		CommentUserLike(user_id=request.user.id, comment_id=comment_id, value=1).save()
+		cul = CommentUserLike(user_id=request.user.id, comment_id=comment_id, value=1)
+		cul.save()
 		return HttpResponse(json.dumps({ 'result': 'ok' }), content_type="application/json")
 	except:	
 		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
