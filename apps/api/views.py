@@ -84,14 +84,12 @@ def voting(request):
 
 def topic(request, topic_id):
 	if request.method == 'POST':
-		if request.user == None:
-			return HttpResponseRedirect('/login/')
 		try:
 			c = Comment(user=request.user, topic_id=topic_id, text=request.POST.get('text', ''), date_add=datetime.datetime.now())
 			if request.POST.get('q_comment'):
 				c.q_comment = request.POST.get('q_comment')
 			c.save()
 		except:
-			return HttpResponseRedirect('/login/')
+			return HttpResponse(json.dumps({{ 'error': 'auth error' }}), content_type="application/json", status=401)
 	t = full_topic_to_json(topic_id)
 	return HttpResponse(json.dumps(t), content_type="application/json")
