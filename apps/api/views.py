@@ -32,7 +32,10 @@ def full_topic_to_json(topic_id):
 		for c in cs:
 			qcl = c.q_comment
 			if c.q_comment:
-				qcl = c.q_comment.id
+				qcl = {
+					'id': c.q_comment.id,
+					'username': c.q_comment.username
+				}
 			comments.append({
 				'id': c.id,
 				'user':{
@@ -112,5 +115,5 @@ def topics(request):
 		t.save()
 		t = full_topic_to_json(t.id)
 		return HttpResponse(json.dumps(t), content_type="application/json")
-	except:
+	except:	
 		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
