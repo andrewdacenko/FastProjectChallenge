@@ -3,8 +3,20 @@
 {% block content %}
   <div ng-controller="TopicController as topicController" class="row">
     <div class="col-sm-10">
-      <h3 class="page-header">{$ topicController.topic.title $} <div class="pull-right"><i class="fa fa-long-arrow-down"></i><i class="fa fa-long-arrow-up"></i></div></h3>
-      <h4><span class="label label-default">{$ topicController.topic.owner.username $}</span></h4>
+      <h3 class="page-header">
+        <div class="topic-header break">{$ topicController.topic.title $}</div>
+      </h3>
+      <h4>
+        <span class="label label-default">{$ topicController.topic.owner.username $}</span> 
+        <div class="pull-right text-muted rating-block">
+          <span class="rate"
+            ng-class="{red: (topicController.topic.votes < 0), green: (topicController.topic.votes > 0) }">
+            {$ topicController.topic.votes || '0' $}
+          </span>
+          <i class="fa fa-long-arrow-down"></i>
+          <i class="fa fa-long-arrow-up"></i>
+        </div>
+      </h4>
       <h4>
         <small class="text-muted"><span am-time-ago="topicController.topic.date_add"></span></small>
       </h4>
@@ -16,7 +28,7 @@
       <div ng-repeat="a in topicController.topic.comments" class="comment-item">
     
         <div class="comment-author" id="comment{$ a.id $}">
-            <span class="label label-default">{$ a.user.username $}</span> <span class="comment-time" am-time-ago="a.date_add"></span> <span class="comment-reply-to" ng-if="a.q_comment_id">as comment to {$ a.q_comment_id $}</span>
+            <span class="label label-default">{$ a.user.username $}</span> <span class="comment-time" am-time-ago="a.date_add"></span> <span class="comment-reply-to" ng-if="a.q_comment_id">as comment to <span>{$ a.q_comment_id.username $}</span></span>
         </div>
         <div class="comment-text" ng-click="topicController.comment($event, a)">{$ a.text $}</div>
     

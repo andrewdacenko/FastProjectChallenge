@@ -37,8 +37,9 @@ textarea.comment-area:focus {
   color: rgb(107, 107, 107);
 }
 
-.comment-reply-to {
+.comment-reply-to span {
   text-decoration: underline;
+  cursor: default;
 }
 
 .comment-text {
@@ -70,6 +71,32 @@ textarea.comment-area:focus {
 @keyframes enter_sequence {
   from { opacity:0; }
   to { opacity:1; }
+}
+
+.rating-block {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.rating-block i {
+  padding-left: 5px;
+  padding-right: 5px;
+  cursor: pointer;
+  color: rgb(224, 223, 223);
+  text-shadow: 0 0 3px rgba(99, 99, 99, 0.58);
+}
+
+.rating-block .rate {
+  /*min-width: 20px;
+  display: inline-block;
+  text-align: center;*/
+}
+
+.break {
+  word-wrap: break-word;
+}
+
+.topic-header {
 }
 
 .wrapper, .row {
