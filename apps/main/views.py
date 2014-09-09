@@ -7,8 +7,9 @@ def index(request):
 	return render(request, 'index.html', {})
 
 def topic(request, topic_id):
-	if request.method == 'POST':
-		return ''
+	# if request.method == 'POST':
+		# t = Topic.objects.get
+		# return ''
 	return render(request, 'topic.html', {})
 
 def state(request):

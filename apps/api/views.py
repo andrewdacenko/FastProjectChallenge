@@ -43,6 +43,7 @@ def full_topic_to_json(topic_id):
 					'username': t.owner.username
 				},
 			'title': t.title,
+			'comments': comments,
 			'date_add': str(t.date_add.isoformat())
 			}
 	else:

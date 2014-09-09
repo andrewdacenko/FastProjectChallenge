@@ -6,6 +6,7 @@ urlpatterns = patterns('',
     url(r'^archive$', 'apps.api.views.archive'),
     url(r'^voting$', 'apps.api.views.voting'),
     url(r'^topic/(?P<topic_id>\d+)$', 'apps.api.views.topic'),
+    # url(r'^topic/(?P<topic_id>\d+)/comment$', 'apps.api.views.topic'),
 
 
 )
