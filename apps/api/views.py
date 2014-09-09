@@ -111,8 +111,6 @@ def voting(request):
 	return HttpResponse(json.dumps(data), content_type="application/json")
 
 def user(request, user_id):
-	if not request.user.is_authenticated():
-		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
 	rating = CommentUserLike.objects.filter(user_id=user_id).aggregate(models.Sum('value'))['value__sum']
 	comments = []
 	cs = Comment.objects.filter(user_id=user_id)
@@ -134,7 +132,9 @@ def user(request, user_id):
 			'text': c.text,
 			'date_add': str(c.date_add.isoformat())
 			})
-	return HttpResponse(json.dumps({'rating':rating, 'comments': comments}), content_type="application/json")
+	return HttpResponse(json.dumps({
+		'rating':rating, 'comments': comments, 'user': { 'id': user_id, 'username': User.objects.get(id=user_id).username }
+		}), content_type="application/json")
 
 def topic(request, topic_id):
 	if request.method == 'POST':
@@ -163,12 +163,12 @@ def topics(request):
 		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
 
 def topic_top(request, topic_id):
-	# try:
-	t = Topic.objects.get(id=topic_id)
-	data = voting_topic_to_json(t, request.user.id)
-	return HttpResponse(json.dumps(data), content_type="application/json")
-	# except:	
-	# 	return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
+	try:
+		t = Topic.objects.get(id=topic_id)
+		data = voting_topic_to_json(t, request.user.id)
+		return HttpResponse(json.dumps(data), content_type="application/json")
+	except:	
+		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
 
 def topic_vote(request, topic_id):
 	try:
