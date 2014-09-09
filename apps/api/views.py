@@ -44,7 +44,7 @@ def full_topic_to_json(topic_id):
 					'username': c.user.username
 				},
 				'q_comment_id': qcl,
-				'sum': CommentUserLike().likes(t.id)['value__sum'],
+				'sum': CommentUserLike().likes(c.id)['value__sum'],
 				'text': c.text,
 				'date_add': str(c.date_add.isoformat())
 				})
