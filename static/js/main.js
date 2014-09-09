@@ -50,6 +50,7 @@
 
 		this.top = [];
 		this.user_choice = null;
+		this.topic_votes_sum = 0;
 
 		this.error = {
 			timeout: null,
@@ -163,6 +164,10 @@
 				});
 		};
 
+		this.calcVotes = function(user) {
+			return ((user.votes / self.topic_votes_sum) * 100).toFixed(1);
+		};
+
 		$http.get('/api/topic/' + self.id).then(function(response) {
 			self.topic = angular.copy(response.data);
 		});
@@ -170,6 +175,9 @@
 		$http.get('/api/topic/' + self.id + '/top').then(function(response) {
 			self.top = angular.copy(response.data.top_users);
 			self.user_choice = angular.copy(response.data.user_choice);
+			response.data.top_users.forEach(function(item) {
+				self.topic_votes_sum += item.votes;
+			});
 		});
 	};
 
@@ -247,7 +255,7 @@
 	};
 
 	angular
-		.module('MyApp', ['angularMoment', 'ngCookies'])
+		.module('MyApp', ['angularMoment', 'ngCookies', 'ui.bootstrap'])
 		.config(['$httpProvider', '$interpolateProvider', appCongif])
 		.directive('ngEnter', ngEnter)
 		.controller('IndexController', ['$http', IndexController])
