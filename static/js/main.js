@@ -113,7 +113,19 @@
 			$http
 				.post('/api/topic/' + self.id + '/' + url)
 				.then(function(response) {
-					console.log(response.data);
+					self.topic.sum = self.topic.sum + (!!bool ? 1 : -1);
+				}, function(reason) {
+					console.log(reason);
+				});
+		};
+
+		this.likeComment = function(comment, bool) {
+			var url = !!bool ? 'like' : 'dislike';
+
+			$http
+				.post('/api/topic/' + comment.id + '/' + url)
+				.then(function(response) {
+					comment.sum = comment.sum + (!!bool ? 1 : -1);
 				}, function(reason) {
 					console.log(reason);
 				});

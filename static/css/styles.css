@@ -73,9 +73,13 @@ textarea.comment-area:focus {
   to { opacity:1; }
 }
 
-.rating-block {
+.rating-block{
   font-size: 24px;
   font-weight: bold;
+}
+
+.rating-block.rating-block-small {
+  font-size: 14px;
 }
 
 .rating-block i {
@@ -84,6 +88,10 @@ textarea.comment-area:focus {
   cursor: pointer;
   color: rgb(224, 223, 223);
   text-shadow: 0 0 3px rgba(99, 99, 99, 0.58);
+}
+
+.rating-block i:hover {
+  color: #2a6496
 }
 
 .rating-block .rate {
