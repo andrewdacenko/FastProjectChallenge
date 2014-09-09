@@ -110,6 +110,32 @@ def voting(request):
 				                            	).order_by('id'))
 	return HttpResponse(json.dumps(data), content_type="application/json")
 
+def user(request, user_id):
+	if not request.user.is_authenticated():
+		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
+	rating = CommentUserLike.objects.filter(user_id=user_id).aggregate(models.Sum('value'))['value__sum']
+	comments = []
+	cs = Comment.objects.filter(user_id=user_id)
+	for c in cs:
+		qcl = c.q_comment
+		if c.q_comment:
+			qcl = {
+				'id': c.q_comment.id,
+				'username': c.q_comment.username
+			}
+		comments.append({
+			'id': c.id,
+			'user':{
+				'id': c.user.id,
+				'username': c.user.username
+			},
+			'q_comment_id': qcl,
+			'sum': CommentUserLike().likes(c.id)['value__sum'],
+			'text': c.text,
+			'date_add': str(c.date_add.isoformat())
+			})
+	return HttpResponse(json.dumps({'rating':rating, 'comments': comments}), content_type="application/json")
+
 def topic(request, topic_id):
 	if request.method == 'POST':
 		try:

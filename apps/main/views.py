@@ -17,3 +17,6 @@ def state(request):
 
 def new(request):
 	return render(request, 'new.html', {})
+
+def profile(request):
+	return render(request, 'profile.html', {})

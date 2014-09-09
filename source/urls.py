@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^active/$', 'apps.main.views.state'),
     url(r'^voting/$', 'apps.main.views.state'),
     url(r'^archive/$', 'apps.main.views.state'),
+    url(r'^profile/$', 'apps.main.views.profile'),
 
     url(r'^login/$', 'apps.guest.views.login', name='login'),
     url(r'^auth/$', 'apps.guest.views.auth', name='auth'),
