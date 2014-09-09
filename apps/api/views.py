@@ -44,6 +44,7 @@ def full_topic_to_json(topic_id):
 					'username': c.user.username
 				},
 				'q_comment_id': qcl,
+				'sum': CommentUserLike().likes(t.id)['value__sum'],
 				'text': c.text,
 				'date_add': str(c.date_add.isoformat())
 				})
@@ -136,6 +137,26 @@ def topic_dislike(request, topic_id):
 		if len(tul):
 			return HttpResponse(json.dumps({ 'error': 'already liked' }), content_type="application/json", status=403)
 		TopicUserLike(user_id=request.user.id, topic_id=topic_id, value=-1).save()
+		return HttpResponse(json.dumps({ 'result': 'ok' }), content_type="application/json")
+	except:	
+		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
+
+def comment_like(request, comment_id):
+	try:
+		cul = CommentUserLike.objects.filter(user_id=request.user.id, comment_id=comment_id)
+		if len(cul):
+			return HttpResponse(json.dumps({ 'error': 'already liked' }), content_type="application/json", status=403)
+		CommentUserLike(user_id=request.user.id, comment_id=comment_id, value=1).save()
+		return HttpResponse(json.dumps({ 'result': 'ok' }), content_type="application/json")
+	except:	
+		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
+
+def comment_dislike(request, comment_id):
+	try:
+		cul = CommentUserLike.objects.filter(user_id=request.user.id, comment_id=comment_id)
+		if len(cul):
+			return HttpResponse(json.dumps({ 'error': 'already liked' }), content_type="application/json", status=403)
+		CommentUserLike(user_id=request.user.id, comment_id=comment_id, value=-1).save()
 		return HttpResponse(json.dumps({ 'result': 'ok' }), content_type="application/json")
 	except:	
 		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)

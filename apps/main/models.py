@@ -30,6 +30,9 @@ class CommentUserLike(models.Model):
 	comment = models.ForeignKey(Comment, related_name='culc')
 	value = models.IntegerField(default = 0)
 
+	def likes(self, comment_id):
+		return CommentUserLike.objects.filter(comment_id=comment_id).aggregate(models.Sum('value'))
+
 class Vote(models.Model):
 	user_from = models.ForeignKey('auth.User', related_name='vuf')
 	user_to = models.ForeignKey('auth.User', related_name='vut')
