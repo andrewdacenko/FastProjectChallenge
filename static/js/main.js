@@ -55,6 +55,22 @@
 		this.text = '';
 		this.to = null;
 
+		this.isLikable = function() {
+			var added = (new Date(self.topic.date_add)).getTime();
+			var now = new Date();
+			now.setDate(now.getDate() - 1);
+			return added > now.getTime();
+		};
+
+		this.isVotable = function() {
+			var added = (new Date(self.topic.date_add)).getTime();
+			var oneDay = new Date();
+			var twoDays = new Date();
+			oneDay.setDate(oneDay.getDate() - 1);
+			twoDays.setDate(twoDays.getDate() - 2);
+			return added > twoDays.getTime() && added < oneDay.getTime();
+		};
+
 		this.submit = function() {
 			if (self.error.timeout) {
 				$timeout.cancel(self.error.timeout);

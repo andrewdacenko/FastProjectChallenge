@@ -1,40 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <title>Sign In | Main server</title>
-
-  <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/superhero/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <title>Title</title>
+  <meta name="generator" content="Bootply">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
   <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
+  <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="/static/bower_components/moment/moment.js"></script>
+  <script src="/static/bower_components/angular/angular.js"></script>
+  <script src="/static/bower_components/angular-moment/angular-moment.js"></script>
+  <script src="/static/bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="/static/js/main.js"></script>
 </head>
-<body>
-  <div class="container">
-    <form class="form-signin" method="post" role="form" action="/auth/" >
-        {% csrf_token %}
-      <h2 class="form-signin-heading">Please Sign in</h2>
-      <input type="text" class="form-control" placeholder="Username" required="" autofocus="" id="username" name="username">
-      <input type="password" class="form-control" placeholder="Password" required="" id="password" name="password">
-      <label class="checkbox">
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
-      <button class="btn btn-success btn-block" type="submit">Sign In</button>
-      <a class="btn btn-info btn-block" href="/register/">Sign Up</a>
-    </form>
+<body ng-app="MyApp">
+  <div class="wrapper">
+    <div class="box">
+      <div class="row">
+        
+        <!-- sidebar -->
+        <div class="column col-sm-3" id="sidebar">
+          <a class="logo" href="/">ARGUES</a>
+          <ul class="nav">
+            <li><a href="/active">Active</a></li>
+            <li><a href="/voting">Voting</a></li>
+            <li><a href="/archive">Archive</a></li>
+            <li><a href="/new">New Topic</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="/logout">Logout</a></li>
+            {% else %}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+            {% endif %}
+          </ul>
+          <ul class="nav hidden-xs" id="sidebar-footer">
+            <li>
+              <a href="http://www.bootply.com"><h3>Basis</h3>Made with <i class="glyphicon glyphicon-heart-empty"></i> by Bootply</a>
+            </li>
+          </ul>
+        </div>
+        <!-- /sidebar -->
+        
+        <!-- main -->
+        <div class="column col-sm-9" id="main">
+          <div class="padding">
+            <div class="full col-sm-9">
+              
+              <!-- content -->
+
+              <div class="col-sm-12">
+                <div class="page-header text-muted divider">
+                  Sign In
+                </div>
+                <form class="form-signin" method="post" role="form" action="/auth/" >
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <input type="text" class="comment-area form-control" placeholder="Username" required="" autofocus="" id="username" name="username">
+                  </div>
+                  <div class="form-group">
+                    <input type="password" class="comment-area form-control" placeholder="Password" required="" id="password" name="password">
+                  </div>
+                  <div class="form-group">
+                  <button class="btn btn-success" type="submit">Sign In</button>
+                  <a class="btn btn-info" href="/register/">Sign Up</a>
+                  </div>
+                </form>
+              </div>              
+
+              <div class="col-sm-12">
+                <div class="page-header text-muted divider">
+                  Connect with Us
+                </div>
+              </div>
+            
+              <div class="row">
+                <div class="col-sm-6">
+                   <a href="#">Twitter</a> <small class="text-muted">|</small> <a href="#">Facebook</a> <small class="text-muted">|</small> <a href="#">Google+</a>
+                </div>
+              </div>
+              
+              <hr>
+              
+              <div class="row" id="footer">    
+                <div class="col-sm-6">
+                
+                </div>
+                <div class="col-sm-6">
+                <p>
+                <a href="#" class="pull-right">©Copyright Inc.</a>
+                </p>
+                </div>
+              </div>
+              
+              <hr>
+              
+              <h3 class="text-center">
+                <a href="http://bootply.com/" target="ext">Theme made by Bootply</a>
+              </h3>
+              
+              <hr>
+            </div><!-- /col-9 -->
+          </div><!-- /padding -->
+        </div>
+        <!-- /main -->
+      </div>
+    </div>
   </div>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-  <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-
 </body>
 </html>

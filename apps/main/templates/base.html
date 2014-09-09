@@ -26,12 +26,18 @@
         
         <!-- sidebar -->
         <div class="column col-sm-3" id="sidebar">
-          <a class="logo" href="/">A</a>
+          <a class="logo" href="/">ARGUES</a>
           <ul class="nav">
             <li><a href="/active">Active</a></li>
             <li><a href="/voting">Voting</a></li>
             <li><a href="/archive">Archive</a></li>
             <li><a href="/new">New Topic</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="/logout">Logout</a></li>
+            {% else %}
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+            {% endif %}
           </ul>
           <ul class="nav hidden-xs" id="sidebar-footer">
             <li>

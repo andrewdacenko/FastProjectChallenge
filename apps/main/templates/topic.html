@@ -13,8 +13,8 @@
             ng-class="{red: (topicController.topic.sum < 0), green: (topicController.topic.sum > 0) }">
             {$ topicController.topic.sum || '0' $}
           </span>
-          <i ng-click="topicController.likeTopic(false)" class="fa fa-long-arrow-down"></i>
-          <i ng-click="topicController.likeTopic(true)" class="fa fa-long-arrow-up"></i>
+          <i ng-if="topicController.isLikable()" ng-click="topicController.likeTopic(false)" class="fa fa-long-arrow-down"></i>
+          <i ng-if="topicController.isLikable()" ng-click="topicController.likeTopic(true)" class="fa fa-long-arrow-up"></i>
         </div>
       </h4>
       <h4>
@@ -22,8 +22,14 @@
       </h4>
       <br>
 
+      <div ng-show="topicController.isVotable()">
+        <div ng-repeat="a in topicController.topic.comments">
+          <li><div class="comment-text" ng-click="topicController.vote(a)">{$ a.text $}</div></li>
+        </div>
+      </div>
+
       <div ng-hide="topicController.topic.comments.length !== 0">
-        <p class="text-muted">No comments yet.</p>
+        <p ng-if="topicController.isLikable()" class="text-muted">No comments yet.</p>
       </div>
       <div ng-repeat="a in topicController.topic.comments" class="comment-item">
     
@@ -39,12 +45,11 @@
             </div>
         </div>
         <div class="comment-text" ng-click="topicController.comment($event, a)">{$ a.text $}</div>
-    
       </div>
 
       <hr>
 
-      <form name="commentForm" novalidate class="form" ng-submit="commentForm.$valid && topicController.submit()">
+      <form ng-if="topicController.isLikable()" name="commentForm" novalidate class="form" ng-submit="commentForm.$valid && topicController.submit()">
         {% csrf_token %}
         <div class="form-group">
           <textarea class="form-control comment-area" ng-model="topicController.text" required minlength="1" placeholder="Sample argument" rows="5"></textarea>
