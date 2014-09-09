@@ -7,10 +7,10 @@
 				Active
 			</div> 
 		</div>
-		<div ng-hide="active.length !== 0" class="row">
+		<div ng-hide="index.active.length !== 0" class="row">
 			<p class="col-sm-10 text-muted">No topics yet</p>
 		</div>
-		<div ng-show="active.length !== 0" ng-repeat="a in active" class="row">
+		<div ng-show="index.active.length !== 0" ng-repeat="a in index.active" class="row">
 			<div class="col-sm-10">
 				<h3>{$ a.title $}</h3>
 				<h4><span class="label label-default">{$ a.owner.username $}</span></h4><h4>
@@ -26,10 +26,10 @@
 				Voting
 			</div> 
 		</div>
-		<div ng-hide="voting.length !== 0" class="row">
+		<div ng-hide="index.voting.length !== 0" class="row">
 			<p class="col-sm-10 text-muted">No topics yet</p>
 		</div>
-		<div ng-show="voting.length !== 0" ng-repeat="a in voting" class="row">
+		<div ng-show="index.voting.length !== 0" ng-repeat="a in index.voting" class="row">
 			<div class="col-sm-10">
 				<h3>{$ a.title $}</h3>
 				<h4><span class="label label-default">{$ a.owner.username $}</span></h4><h4>
@@ -45,10 +45,10 @@
 				Archive
 			</div> 
 		</div>
-		<div ng-hide="archive.length !== 0" class="row">
+		<div ng-hide="index.archive.length !== 0" class="row">
 			<p class="col-sm-10 text-muted">No topics yet</p>
 		</div>
-		<div ng-show="archive.length !== 0" ng-repeat="a in archive" class="row">
+		<div ng-show="index.archive.length !== 0" ng-repeat="a in index.archive" class="row">
 			<div class="col-sm-10">
 				<h3>{$ a.title $}</h3>
 				<h4><span class="label label-default">{$ a.owner.username $}</span></h4><h4>
