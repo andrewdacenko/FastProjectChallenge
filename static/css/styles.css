@@ -196,7 +196,10 @@ input.comment-area:focus
     box-shadow: inset -2px -2px 1px 0 rgba(0, 0, 0, .03);
 }
 
-
+.topic {
+    cursor: pointer;
+    color: #2a6496;
+}
 
 .wrapper,
 .row

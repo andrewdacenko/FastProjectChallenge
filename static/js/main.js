@@ -226,10 +226,28 @@
 		};
 	};
 
+	function ProfileController($http, $location) {
+		var self = this;
+
+		this.id = $location.absUrl().split('/')[4];
+
+		this.navigateTo = function(comment) {
+			window.location = '/topic/' + comment.topic.id;
+		};
+
+		$http
+			.get('/api/user/' + self.id)
+			.then(function(response) {
+				self.user = angular.copy(response.data);
+			}, function(reason) {
+				console.log(reason);
+			});
+	};
+
 	function ngEnter() {
 		return function(scope, element, attrs) {
 			element.bind("keydown keypress", function(event) {
-				if (event.which === 13) {
+				if (event.which === 13 && (event.ctrlKey || event.shiftKey)) {
 					scope.$apply(function() {
 						scope.$eval(attrs.ngEnter);
 					});
@@ -260,6 +278,7 @@
 		.directive('ngEnter', ngEnter)
 		.controller('IndexController', ['$http', IndexController])
 		.controller('StateController', ['$http', '$location', StateController])
+		.controller('ProfileController', ['$http', '$location', ProfileController])
 		.controller('TopicController', ['$http', '$location', '$timeout', TopicController])
 		.controller('NewTopicController', ['$http', '$location', '$timeout', NewTopicController])
 		.run(['$http', '$cookies', appRun])

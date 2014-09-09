@@ -1,25 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div ng-controller="ProfileController as profile" class="row">
-    <div class="col-sm-12" id="featured"> 
-      <div class="page-header text-muted">
-        {$ state.title $}
-      </div> 
-    </div>
-    <div ng-hide="state.topics.length !== 0" class="row">
-      <p class="col-sm-10 text-muted">No topics yet</p>
-    </div>
-    <div ng-show="state.topics.length !== 0" ng-repeat="a in state.topics | orderBy:'-id'" class="row">
-      <div class="col-sm-10">
-        <h3 class="break"><a href="/topic/{$ a.id $}">{$ a.title $}</a></h3>
-        <h4><span class="label label-default">{$ a.owner.username $}</span></h4><h4>
-        <small class="text-muted"><span am-time-ago="a.date_add"></span> • <a href="/topic/{$ a.id $}" class="text-muted">Read More</a></small>
-        </h4>
+  <div ng-controller="ProfileController as profile">
+    <div class="row">
+      <div class="col-sm-12" id="featured"> 
+        <h3 class="page-header text-muted">
+          {$ profile.user.user.username $} <div class="pull-right" title="Rating">{$ profile.user.rating $}</div>
+        </h3> 
       </div>
-      <div class="col-sm-2">
-        <a href="#" class="pull-right">{$ a.votes $}</a>
-      </div> 
+    </div>
+  
+    <div ng-hide="profile.user.comments.length !== 0" class="row">
+      <p class="col-sm-12 text-muted">No topics yet</p>
+    </div>
+
+    <div ng-repeat="a in profile.user.comments | orderBy:'-id'" class="row">
+      <div class="comment-item">
+        <div class="comment-author">
+          <span class="label label-default"><a href="/profile/{$ a.user.id $}">{$ a.user.username $}</a></span> <span class="comment-time" am-time-ago="a.date_add"></span> <span class="comment-reply-to" ng-if="a.q_comment_id">as comment to <span><a href="/profile/{$ a.q_comment_id.id $}">{$ a.q_comment_id.username $}</a></span></span> <span title="{$ a.topic.title $}" alt="{$ a.topic.title $}" class="topic">TOPIC</span>
+          <div class="pull-right text-muted rating-block rating-block-small">
+            <span class="rate" ng-class="{red: (a.sum < 0), green: (a.sum > 0) }">
+              {$ a.sum || '0' $}
+            </span>
+          </div>
+        </div>
+        <div class="comment-text" ng-click="profile.navigateTo(a)">{$ a.text $}</div>
+      </div>
     </div>
   </div>
 {% endblock %}
