@@ -91,6 +91,9 @@ def topic(request, topic_id):
 	if request.method == 'POST':
 		try:
 			print request.POST
+			t = Topic.objects.get(id=topic_id)
+			if !t.is_active():
+				return HttpResponse(json.dumps({ 'error': 'comment error' }), content_type="application/json", status=403)
 			c = Comment(user=request.user, topic_id=topic_id, text=request.POST.get('text', ''), date_add=datetime.datetime.now())
 			if request.POST.get('q_comment'):
 				c.q_comment = request.POST.get('q_comment')
@@ -105,6 +108,8 @@ def topics(request):
 		return HttpResponseRedirect('/')
 	try:
 		t = Topic(owner = request.user, title = request.POST.get('title', ''))
-		# t.
+		t.save()
+		t = full_topic_to_json(t.id)
+		return HttpResponse(json.dumps(t), content_type="application/json")
 	except:
 		return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)

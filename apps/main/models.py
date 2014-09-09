@@ -6,6 +6,9 @@ class Topic(models.Model):
 	title = models.CharField(max_length=255)
 	date_add = models.DateTimeField(default = datetime.datetime.now())
 
+	def is_active(self):
+		return self.date_add >= datetime.datetime.now() - datetime.timedelta(days=1)
+
 class Comment(models.Model):
 	user = models.ForeignKey('auth.User', related_name='cu')
 	topic = models.ForeignKey('main.Topic', related_name='ct')
