@@ -155,6 +155,47 @@ input.comment-area:focus
     word-wrap: break-word;
 }
 
+.vote-container
+{
+    margin-bottom: 40px;
+}
+
+.vote-candidate
+{
+    /*background: #2a6496;*/
+}
+
+.vote-candidate-name
+{
+    font-style: italic;
+    line-height: 1em;
+
+    margin: 6px 0;
+    margin-top: 10px;
+    padding-left: 10px;
+
+    border-left: 2px solid grey;
+}
+
+.vote-candidate-button
+{
+    padding: 3px 5px;
+
+    cursor: pointer;
+    text-align: center;
+
+    color: rgb(90, 87, 87);
+    border: 1px solid rgba(128, 128, 128, .22);
+    background: whitesmoke;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .08);
+}
+
+.vote-candidate-button:hover
+{
+    color: #2a6496;
+    box-shadow: inset -2px -2px 1px 0 rgba(0, 0, 0, .03);
+}
+
 
 
 .wrapper,
@@ -254,7 +295,7 @@ input.comment-area:focus
 }
 #sidebar a.logo:hover
 {
-    background-color: #E8F5FF;
+    background-color: #e8f5ff;
 }
 #sidebar-footer
 {
