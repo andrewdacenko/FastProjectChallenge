@@ -99,7 +99,7 @@ def topic(request, topic_id):
 			print t.title
 			c = Comment(user=request.user, topic_id=topic_id, text=request.POST.get('text', ''), date_add=datetime.datetime.now())
 			if request.POST.get('q_comment'):
-				c.q_comment = request.POST.get('q_comment')
+				c.q_comment_id = request.POST.get('q_comment')
 			c.save()
 		except:
 			return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
