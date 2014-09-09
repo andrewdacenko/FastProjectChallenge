@@ -14,5 +14,3 @@ if (Topics.find().count() === 0) {
 		author: 'Tom Coleman',
 	});
 }
-
-Meteor.publish('topics');
