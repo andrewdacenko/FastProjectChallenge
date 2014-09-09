@@ -38,7 +38,7 @@
 		};
 	};
 
-	function TopicController($http, $location) {
+	function TopicController($http, $location, $timeout) {
 		var self = this;
 
 		this.id = $location.absUrl().split('/')[4];
@@ -47,19 +47,53 @@
 			comments: []
 		};
 
+		this.error = {
+			timeout: null,
+			text: ''
+		};
+
 		this.text = '';
 		this.to = null;
 
 		this.submit = function() {
-			$http.post('/api/topic/' + self.id, {
-				text: this.text
-			}).then(function(response) {
-				self.text = '';
-				self.to = null;
-				self.topic = response.data;
-			}, function(reason) {
-				console.log(reason);
-			});
+			if (self.error.timeout) {
+				$timeout.cancel(self.error.timeout);
+			};
+
+			if ((self.text.trim()).length < 1) {
+				self.error.text = 'Need at least 1 charachter';
+				self.error.timeout = $timeout(function() {
+					self.error.text = '';
+				}, 1500);
+
+				return;
+			};
+
+			var data = {};
+			data.text = self.text;
+
+			if (self.to) {
+				data.q_comment = self.to.id;
+			};
+
+			$http
+				.post('/api/topic/' + self.id, data)
+				.then(function(response) {
+					self.text = '';
+					self.to = null;
+					self.topic = response.data;
+					self.error.text = '';
+				}, function(reason) {
+					if (reason.status === 401) {
+						// window.location = '/login';
+					};
+
+					self.error.text = 'Something went wrong';
+					self.error.timeout = $timeout(function() {
+						self.error.text = '';
+						self.error.timeout = null;
+					}, 1500);
+				});
 		};
 
 		this.comment = function($event, a) {
@@ -92,8 +126,6 @@
 			if (self.error.timeout) {
 				$timeout.cancel(self.error.timeout);
 			};
-
-			console.log(self.text.trim().length);
 
 			if ((self.text.trim()).length < 10) {
 				self.error.text = 'Need at least 10 symbols';
@@ -138,7 +170,7 @@
 		})
 		.controller('IndexController', ['$http', IndexController])
 		.controller('StateController', ['$http', '$location', StateController])
-		.controller('TopicController', ['$http', '$location', TopicController])
+		.controller('TopicController', ['$http', '$location', '$timeout', TopicController])
 		.controller('NewTopicController', ['$http', '$location', '$timeout', NewTopicController])
 		.run(function($http, $cookies) {
 			$http.defaults.headers.post['X-CSRFToken'] = $cookies['csrftoken'];
