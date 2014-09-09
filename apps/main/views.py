@@ -9,7 +9,7 @@ def index(request):
 
 def topic(request, topic_id):
 	c = {}
-    c.update(csrf(request))
+	c.update(csrf(request))
 	return render(request, 'topic.html', c)
 
 def state(request):
