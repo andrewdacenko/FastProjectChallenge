@@ -9,11 +9,11 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'apps.main.views.index', name='index'),
     url(r'^topic/(?P<topic_id>\d+)$', 'apps.main.views.topic'),
+    url(r'^profile/(?P<profile_id>\d+)$', 'apps.main.views.profile'),
     url(r'^new/$', 'apps.main.views.new'),
     url(r'^active/$', 'apps.main.views.state'),
     url(r'^voting/$', 'apps.main.views.state'),
     url(r'^archive/$', 'apps.main.views.state'),
-    url(r'^profile/$', 'apps.main.views.profile'),
 
     url(r'^login/$', 'apps.guest.views.login', name='login'),
     url(r'^auth/$', 'apps.guest.views.auth', name='auth'),
