@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core.context_processors import csrf
 from django.shortcuts import render
 
-from utils.decorators import render_to
+# from utils.decorators import render_to
 from apps.main.models import *
 # from apps.main.models import Organization, SystemUser, UserType
 from django.http import HttpResponse

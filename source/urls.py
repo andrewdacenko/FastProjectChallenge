@@ -12,5 +12,7 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'apps.guest.views.logout', name='logout'),
     url(r'^register/$', 'apps.guest.views.register_user', name='register_user'),
 
+    url(r'^api/', include('apps.api.urls')),
+
     url(r'^admin/', include(admin.site.urls)),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
