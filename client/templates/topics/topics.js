@@ -1,5 +1,5 @@
-Template.topicsList.helpers({
-    topics: function() {
-        return Topics.find();
-    }
-});
+// Template.topicsList.helpers({
+//     topics: function() {
+//         return Topics.find();
+//     }
+// });
