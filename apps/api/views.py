@@ -92,6 +92,6 @@ def topic(request, topic_id):
 				c.q_comment = request.POST.get('q_comment')
 			c.save()
 		except:
-			return HttpResponse(json.dumps({{ 'error': 'auth error' }}), content_type="application/json", status=401)
+			return HttpResponse(json.dumps({ 'error': 'auth error' }), content_type="application/json", status=401)
 	t = full_topic_to_json(topic_id)
 	return HttpResponse(json.dumps(t), content_type="application/json")
