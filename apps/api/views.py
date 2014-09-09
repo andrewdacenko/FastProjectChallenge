@@ -24,7 +24,6 @@ def topic_to_json(topic_list):
 
 def index(request):
 	topics_on_main_page = 3
-	print datetime.datetime.now(),datetime.datetime.now() - timedelta(days=1),datetime.datetime.now() - timedelta(days=2)
 	data = {
 		'active': topic_to_json(Topic.objects.filter(  date_add__gt=datetime.datetime.now() - timedelta(days=1),
 				                                date_add__lt=datetime.datetime.now()
@@ -34,7 +33,7 @@ def index(request):
 				                            	date_add__lt=datetime.datetime.now() - timedelta(days=1)
 				                            	).order_by('id')[:topics_on_main_page]),
 
-		'archive': topic_to_json(Topic.objects.filter( date_add__gt=datetime.datetime.now() - timedelta(days=2)
+		'archive': topic_to_json(Topic.objects.filter( date_add__lt=datetime.datetime.now() - timedelta(days=2)
 				                            	).order_by('id')[:topics_on_main_page])
 	}
 	return HttpResponse(json.dumps(data), content_type="application/json")
